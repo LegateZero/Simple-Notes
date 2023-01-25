@@ -5,9 +5,14 @@
     xmlns:local="using:Simple_Notes"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="using:Simple_Notes.ViewModels"
     mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+     
+    >
+    <Page.DataContext>
+        <vm:MainPageViewModel/>
+    </Page.DataContext>
     <Grid>
 
     </Grid>
