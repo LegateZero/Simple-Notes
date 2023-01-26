@@ -33,7 +33,7 @@
                 </MenuBar>
             </Grid>
         </Border>
-        <ListView Grid.Row="1" ItemsSource="{Binding Notes}" x:Name="ViewList">
+        <ListView Grid.Row="1" ItemsSource="{Binding Notes}" x:Name="ViewList" SelectedItem="{Binding SelectedNote, Mode=TwoWay}" SelectionMode="Single"> 
             <ListView.ItemContainerStyle>
                 <Style TargetType="ListViewItem">
                     <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
@@ -46,7 +46,7 @@
                         </TextBlock>
                         <interactivity:Interaction.Behaviors>
                             <Core:EventTriggerBehavior EventName="DoubleTapped" >
-                                <Core:InvokeCommandAction Command="{Binding DataContext.OpenNoteCommand,ElementName=ViewList}" CommandParameter="{Binding }" />
+                                <Core:InvokeCommandAction Command="{Binding DataContext.OpenNoteCommand,ElementName=ViewList}" />
                             </Core:EventTriggerBehavior>
                         </interactivity:Interaction.Behaviors>
                     </Border>

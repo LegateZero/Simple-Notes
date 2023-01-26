@@ -10,6 +10,7 @@ using Simple_Notes.ViewModels.Base;
 using Simple_Notes.Views;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml;
+using SimpleNotes.DAL.Context;
 
 namespace Simple_Notes.ViewModels
 {
@@ -91,7 +92,14 @@ namespace Simple_Notes.ViewModels
 
         #endregion
 
+        
 
+
+        public NotePageViewModel(Note note)
+        {
+            Header = note.Header;
+            Body = note.Body;
+        }
 
     }
 }

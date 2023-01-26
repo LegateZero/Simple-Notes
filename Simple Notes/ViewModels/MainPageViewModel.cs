@@ -50,6 +50,18 @@ namespace Simple_Notes.ViewModels
 
         #endregion
 
+        #region Note : Note - SelectedNote
+
+        private Note _selectedNote;
+
+        public Note SelectedNote
+        {
+            get => _selectedNote;
+            set => SetField(ref _selectedNote, value);
+        }
+
+        #endregion
+
 
         #region Sort : SortType - Sorting Direction
 
@@ -129,7 +141,8 @@ namespace Simple_Notes.ViewModels
         private void OnOpenNoteCommandExecuted(object p)
         {
             Frame frame = Window.Current.Content as Frame;
-            frame.Navigate(typeof(NotePage), p);
+            var notePageViewModel = new NotePageViewModel(SelectedNote);
+            frame.Navigate(typeof(NotePage), notePageViewModel);
         }
 
         #endregion

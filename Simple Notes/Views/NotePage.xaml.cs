@@ -26,11 +26,12 @@ namespace Simple_Notes.Views
     /// </summary>
     public sealed partial class NotePage : Page
     {
+
         public NotePage()
         {
+            Debug.WriteLine("Test1");
             this.InitializeComponent();
-            var containter = ((App)App.Current).Container;
-            DataContext = ActivatorUtilities.GetServiceOrCreateInstance(containter, typeof(NotePageViewModel));
+            
         }
 
         private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
@@ -42,8 +43,11 @@ namespace Simple_Notes.Views
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-            Debug.WriteLine("Test");
-            Debug.WriteLine(((Note)(e.Parameter)).Body);
+            Debug.WriteLine("Test2");
+            var viewModel = ((NotePageViewModel)(e.Parameter));
+            Debug.WriteLine(viewModel);
+            var containter = ((App)App.Current).Container;
+            DataContext = viewModel;
         }
     }
 }
