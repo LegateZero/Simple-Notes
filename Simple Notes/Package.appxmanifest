@@ -14,7 +14,7 @@
   <mp:PhoneIdentity PhoneProductId="a4bb8d67-5e0c-401d-82aa-d9eae3c7f8f9" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
-    <DisplayName>Simple Notes</DisplayName>
+    <DisplayName>SimpleNotes</DisplayName>
     <PublisherDisplayName>Vadim</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
@@ -30,7 +30,7 @@
   <Applications>
     <Application Id="App"
       Executable="$targetnametoken$.exe"
-      EntryPoint="Simple_Notes.App">
+      EntryPoint="Simple_Notes.Program">
       <uap:VisualElements
         DisplayName="Заметки"
         Square150x150Logo="Assets\Square150x150Logo.png"

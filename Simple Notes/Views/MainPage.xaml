@@ -6,14 +6,36 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:vm="using:Simple_Notes.ViewModels"
+    xmlns:interop="using:Windows.UI.Xaml.Interop"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
-     
-    >
-    <Page.DataContext>
-        <vm:MainPageViewModel/>
-    </Page.DataContext>
+    d:DataContext="{d:DesignInstance Type=vm:MainPageViewModel, IsDesignTimeCreatable=True}">
     <Grid>
-
+        <Grid.RowDefinitions>
+            <RowDefinition Height="33"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Border Grid.Row="0" Background="DarkGray" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Button Content="Добавить заметку" HorizontalAlignment="Left" VerticalAlignment="Stretch"/>
+                <TextBox PlaceholderText="Поиск..." HorizontalAlignment="Center" MinWidth="250"/>
+                <MenuBar HorizontalAlignment="Right" Height="33">
+                    <MenuBarItem VerticalAlignment="Stretch"  Title="Сортировка">
+                    <MenuFlyoutItem Text="A-Z" Command="{Binding SortDescending}"/>
+                    <MenuFlyoutItem Text="Z-A" Command="{Binding SortAcending}"/>
+                </MenuBarItem>
+                </MenuBar>
+            </Grid>
+        </Border>
+        <ListView Grid.Row="1" ItemsSource="{Binding Notes}">
+            <ListView.ItemTemplate>
+                <DataTemplate >
+                    <TextBlock Text="{Binding Body}" FontWeight="Bold"/>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
     </Grid>
 </Page>

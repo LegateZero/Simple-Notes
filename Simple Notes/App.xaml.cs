@@ -14,6 +14,13 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Simple_Notes.Services;
+using Simple_Notes.Services.Interfaces;
+using SimpleNotes.DAL.Entities;
+
 
 namespace Simple_Notes
 {
@@ -30,6 +37,7 @@ namespace Simple_Notes
         {
             this.InitializeComponent();
             this.Suspending += OnSuspending;
+            Container = ConfigureDependencyInjection();
         }
 
         /// <summary>
@@ -37,7 +45,7 @@ namespace Simple_Notes
         /// например, если приложение запускается для открытия конкретного файла.
         /// </summary>
         /// <param name="e">Сведения о запросе и обработке запуска.</param>
-        protected override void OnLaunched(LaunchActivatedEventArgs e)
+        protected override async void OnLaunched(LaunchActivatedEventArgs e)
         {
             Frame rootFrame = Window.Current.Content as Frame;
 
@@ -96,5 +104,20 @@ namespace Simple_Notes
             //TODO: Сохранить состояние приложения и остановить все фоновые операции
             deferral.Complete();
         }
+
+        
+
+
+        public IServiceProvider Container { get; }
+
+        IServiceProvider ConfigureDependencyInjection()
+        {
+            var serviceCollection = new ServiceCollection();
+
+            
+
+            return serviceCollection.BuildServiceProvider();
+        }
+
     }
 }
