@@ -19,6 +19,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Simple_Notes.Services;
 using Simple_Notes.Services.Interfaces;
+using SimpleNotes.DAL.Context;
 using SimpleNotes.DAL.Entities;
 
 
@@ -113,7 +114,8 @@ namespace Simple_Notes
         IServiceProvider ConfigureDependencyInjection()
         {
             var serviceCollection = new ServiceCollection();
-
+            serviceCollection.AddDbContext<SimpleNotesDb>();
+            serviceCollection.AddScoped<INoteService>()
             
 
             return serviceCollection.BuildServiceProvider();

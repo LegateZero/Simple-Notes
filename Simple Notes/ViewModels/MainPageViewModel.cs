@@ -13,6 +13,7 @@ using Simple_Notes.Infrastructure.Commands;
 using Simple_Notes.Services.Interfaces;
 using Simple_Notes.ViewModels.Base;
 using Simple_Notes.Views;
+using SimpleNotes.BAL.Services.Interfaces;
 using SimpleNotes.DAL.Context;
 using SimpleNotes.DAL.Entities;
 
@@ -26,6 +27,13 @@ namespace Simple_Notes.ViewModels
 
     internal class MainPageViewModel : ViewModel
     {
+        #region Fields
+
+        private readonly INoteService _noteService;
+
+        #endregion
+
+
         #region Title : string - Page title
 
         private string _title = "Проверка";
@@ -223,8 +231,9 @@ namespace Simple_Notes.ViewModels
 
 
 
-        public MainPageViewModel()
+        public MainPageViewModel(INoteService noteService)
         {
+            _noteService = noteService;
             _notesSource.Source = Enumerable.Range(1, 20).Select(i => new Note(){ Body = $"Body of {i} note", Header = $"Header of {i} note", NoteId = i});
         }
     }

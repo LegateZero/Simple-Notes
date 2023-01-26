@@ -210,6 +210,10 @@
     <Folder Include="Infrastructure\Converters\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\SimpleNotes.BAL\SimpleNotes.BAL.csproj">
+      <Project>{cf549d1a-11ab-4363-8cd8-f1ac591ae84a}</Project>
+      <Name>SimpleNotes.BAL</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SimpleNotes.DAL\SimpleNotes.DAL.csproj">
       <Project>{3ff2cccf-f530-4535-b011-dbea7365bd17}</Project>
       <Name>SimpleNotes.DAL</Name>
