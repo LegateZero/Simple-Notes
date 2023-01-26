@@ -165,6 +165,25 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore">
+      <Version>3.1.32</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design">
+      <Version>3.1.32</Version>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational">
+      <Version>3.1.32</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite.Core">
+      <Version>3.1.32</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools">
+      <Version>3.1.32</Version>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
     <PackageReference Include="Microsoft.Extensions.DependencyInjection">
       <Version>3.1.32</Version>
     </PackageReference>
@@ -192,7 +211,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SimpleNotes.DAL\SimpleNotes.DAL.csproj">
-      <Project>{cfa36084-d3f0-4285-96b8-74df313ae5cc}</Project>
+      <Project>{3ff2cccf-f530-4535-b011-dbea7365bd17}</Project>
       <Name>SimpleNotes.DAL</Name>
     </ProjectReference>
   </ItemGroup>

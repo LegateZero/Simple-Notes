@@ -11,6 +11,7 @@ using Simple_Notes.Views;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml;
 using SimpleNotes.DAL.Context;
+using SimpleNotes.DAL.Entities;
 
 namespace Simple_Notes.ViewModels
 {

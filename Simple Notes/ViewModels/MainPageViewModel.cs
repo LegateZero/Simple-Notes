@@ -14,6 +14,7 @@ using Simple_Notes.Services.Interfaces;
 using Simple_Notes.ViewModels.Base;
 using Simple_Notes.Views;
 using SimpleNotes.DAL.Context;
+using SimpleNotes.DAL.Entities;
 
 namespace Simple_Notes.ViewModels
 {
@@ -163,14 +164,6 @@ namespace Simple_Notes.ViewModels
         }
 
         #endregion
-
-
-        public int DoSomething()
-        {
-            return 2;
-        }
-
-
 
         private CollectionViewSource _notesSource = new CollectionViewSource();
 
