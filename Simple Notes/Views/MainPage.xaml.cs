@@ -28,6 +28,7 @@ namespace Simple_Notes
     /// </summary>
     public sealed partial class MainPage : Page
     {
+        internal MainPageViewModel ViewModel { get; set; }
         public MainPage()
         {
             var coreTitleBar = CoreApplication.GetCurrentView().TitleBar;
@@ -37,7 +38,8 @@ namespace Simple_Notes
             //ApplicationView.GetForCurrentView().Title = "Notes";
             this.InitializeComponent();
             var containter = ((App)App.Current).Container;
-            DataContext = ActivatorUtilities.GetServiceOrCreateInstance(containter, typeof(MainPageViewModel));
+            ViewModel = (MainPageViewModel)ActivatorUtilities.GetServiceOrCreateInstance(containter, typeof(MainPageViewModel));
+            DataContext = ViewModel;
             //var context = this.DataContext as MainPageViewModel;
             //if (context == null) return;
             //ApplicationView.GetForCurrentView().Title = "Notes";

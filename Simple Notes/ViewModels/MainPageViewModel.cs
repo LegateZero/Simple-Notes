@@ -5,11 +5,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Data;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Simple_Notes.Infrastructure.Commands;
 using Simple_Notes.Services.Interfaces;
 using Simple_Notes.ViewModels.Base;
+using Simple_Notes.Views;
 using SimpleNotes.DAL.Context;
 
 namespace Simple_Notes.ViewModels
@@ -55,7 +58,11 @@ namespace Simple_Notes.ViewModels
         public SortType Sort
         {
             get => _sort;
-            set => SetField(ref _sort, value);
+            set
+            {
+                SetField(ref _sort, value);
+                OnPropertyChanged(nameof(Notes));
+            }
         }
 
         #endregion
@@ -104,13 +111,93 @@ namespace Simple_Notes.ViewModels
         private void OnSortDescendingExecuted(object p)
         {
             Sort = SortType.Descending;
+
         }
 
         #endregion
 
+
+        #region SortDescending - Explanation
+
+        private ICommand _openNoteCommand;
+
+        public ICommand OpenNoteCommand =>
+            _openNoteCommand ?? (_openNoteCommand = new LambdaCommand(OnOpenNoteCommandExecuted, CanOpenNoteCommandExecute));
+
+        private bool CanOpenNoteCommandExecute(object p) => true;
+
+        private void OnOpenNoteCommandExecuted(object p)
+        {
+            Frame frame = Window.Current.Content as Frame;
+            frame.Navigate(typeof(NotePage), p);
+        }
+
+        #endregion
+
+
+        public int DoSomething()
+        {
+            return 2;
+        }
+
+
+
         private CollectionViewSource _notesSource = new CollectionViewSource();
 
-        public ICollectionView Notes => _notesSource.View;
+        public ICollectionView Notes
+        {
+            get
+            {
+                var filtered = new CollectionViewSource();
+                filtered.Source = Sort == SortType.Ascending 
+                    ? _notesSource.View.OrderBy(note => ((Note)note).Header) 
+                    : _notesSource.View.OrderByDescending(note => ((Note)note).Header);
+                if (Filter.Length == 0)
+                {
+                    return filtered.View;
+                }
+
+                
+                filtered.Source = filtered.View.Where(note => ((Note)note).Header.Contains(Filter));
+                return filtered.View;
+            }
+        }
+
+
+        public ICollectionView SortedNotes
+        {
+            get
+            {
+                if (Filter.Length == 0)
+                {
+                    return _notesSource.View;
+                }
+
+                var filtered = new CollectionViewSource();
+                filtered.Source = _notesSource.View.Where(note => ((Note)note).Header.Contains(Filter));
+                return filtered.View;
+            }
+        }
+
+
+        #region Filter : string - Text filter
+
+        private string _filter = string.Empty;
+
+        public string Filter
+        {
+            get => _filter;
+            set
+            {
+                SetField(ref _filter, value);
+                OnPropertyChanged(nameof(Notes));
+            }
+        }
+
+        #endregion
+
+
+
 
 
         public MainPageViewModel()

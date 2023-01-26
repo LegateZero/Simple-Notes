@@ -7,6 +7,9 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:vm="using:Simple_Notes.ViewModels"
     xmlns:interop="using:Windows.UI.Xaml.Interop"
+    xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+    xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
+    xmlns:Core="using:Microsoft.Xaml.Interactions.Core"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     d:DataContext="{d:DesignInstance Type=vm:MainPageViewModel, IsDesignTimeCreatable=True}">
@@ -20,8 +23,8 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-                <Button Content="Добавить заметку" HorizontalAlignment="Left" VerticalAlignment="Stretch"/>
-                <TextBox PlaceholderText="Поиск..." HorizontalAlignment="Center" MinWidth="250"/>
+                <Button Content="Добавить заметку" HorizontalAlignment="Left" VerticalAlignment="Stretch" Command="{x:Bind  ViewModel.OpenNoteCommand}"/>
+                <TextBox PlaceholderText="Поиск..." HorizontalAlignment="Center" MinWidth="250" Text="{Binding Filter, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                 <MenuBar HorizontalAlignment="Right" Height="33">
                     <MenuBarItem VerticalAlignment="Stretch"  Title="Сортировка">
                     <MenuFlyoutItem Text="A-Z" Command="{Binding SortDescending}"/>
@@ -30,10 +33,17 @@
                 </MenuBar>
             </Grid>
         </Border>
-        <ListView Grid.Row="1" ItemsSource="{Binding Notes}">
+        <ListView Grid.Row="1" ItemsSource="{Binding Notes}" x:Name="ViewList">
             <ListView.ItemTemplate>
                 <DataTemplate >
-                    <TextBlock Text="{Binding Body}" FontWeight="Bold"/>
+                    <TextBlock Text="{Binding Body}" FontWeight="Bold">
+                        <interactivity:Interaction.Behaviors>
+                            <Core:EventTriggerBehavior EventName="DoubleTapped" >
+                                <Core:InvokeCommandAction Command="{Binding DataContext.OpenNoteCommand,ElementName=ViewList}" CommandParameter="{Binding }" />
+                            </Core:EventTriggerBehavior>
+                        </interactivity:Interaction.Behaviors>
+                    </TextBlock>
+                    
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
