@@ -34,16 +34,22 @@
             </Grid>
         </Border>
         <ListView Grid.Row="1" ItemsSource="{Binding Notes}" x:Name="ViewList">
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                </Style>
+            </ListView.ItemContainerStyle>
             <ListView.ItemTemplate>
                 <DataTemplate >
-                    <TextBlock Text="{Binding Body}" FontWeight="Bold">
+                    <Border HorizontalAlignment="Stretch" VerticalAlignment="Stretch" IsHitTestVisible="True">
+                        <TextBlock Text="{Binding Body}" FontWeight="Bold">
+                        </TextBlock>
                         <interactivity:Interaction.Behaviors>
                             <Core:EventTriggerBehavior EventName="DoubleTapped" >
                                 <Core:InvokeCommandAction Command="{Binding DataContext.OpenNoteCommand,ElementName=ViewList}" CommandParameter="{Binding }" />
                             </Core:EventTriggerBehavior>
                         </interactivity:Interaction.Behaviors>
-                    </TextBlock>
-                    
+                    </Border>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
