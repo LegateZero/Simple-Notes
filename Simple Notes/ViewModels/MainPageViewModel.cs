@@ -147,6 +147,23 @@ namespace Simple_Notes.ViewModels
 
         #endregion
 
+        #region DeleteNoteCommand - Note deletion command
+
+        private ICommand _deleteNoteCommand;
+
+        public ICommand DeleteNoteCommand =>
+            _deleteNoteCommand ?? (_deleteNoteCommand = new LambdaCommand(OnDeleteNoteCommandExecuted, CanDeleteNoteCommandExecute));
+
+        private bool CanDeleteNoteCommandExecute(object p) => true;
+
+        private void OnDeleteNoteCommandExecuted(object p)
+        {
+            _notesSource.Source = _notesSource.View.Where(note => ((Note)note).NoteId != ((Note)p).NoteId);
+            OnPropertyChanged(nameof(Notes));
+        }
+
+        #endregion
+
 
         public int DoSomething()
         {

@@ -33,7 +33,8 @@
                 </MenuBar>
             </Grid>
         </Border>
-        <ListView Grid.Row="1" ItemsSource="{Binding Notes}" x:Name="ViewList" SelectedItem="{Binding SelectedNote, Mode=TwoWay}" SelectionMode="Single"> 
+        <ListView Grid.Row="1" ItemsSource="{Binding Notes}" x:Name="ViewList" 
+                  SelectedItem="{Binding SelectedNote, Mode=TwoWay}" SelectionMode="Single" Background="{ThemeResource AppBarBorderThemeBrush }"> 
             <ListView.ItemContainerStyle>
                 <Style TargetType="ListViewItem">
                     <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
@@ -42,13 +43,19 @@
             <ListView.ItemTemplate>
                 <DataTemplate >
                     <Border HorizontalAlignment="Stretch" VerticalAlignment="Stretch" IsHitTestVisible="True">
-                        <TextBlock Text="{Binding Body}" FontWeight="Bold">
+                        <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" IsHitTestVisible="True" IsDoubleTapEnabled="True" Background="Transparent" >
+                            <TextBlock Text="{Binding Header}" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Center">
                         </TextBlock>
-                        <interactivity:Interaction.Behaviors>
-                            <Core:EventTriggerBehavior EventName="DoubleTapped" >
-                                <Core:InvokeCommandAction Command="{Binding DataContext.OpenNoteCommand,ElementName=ViewList}" />
-                            </Core:EventTriggerBehavior>
-                        </interactivity:Interaction.Behaviors>
+                            <Button HorizontalAlignment="Right" Content="Delete" Command="{Binding DataContext.DeleteNoteCommand,ElementName=ViewList}" CommandParameter="{Binding}">
+
+                            </Button>
+                            <interactivity:Interaction.Behaviors>
+                                <Core:EventTriggerBehavior EventName="DoubleTapped" >
+                                    <Core:InvokeCommandAction Command="{Binding DataContext.OpenNoteCommand,ElementName=ViewList}" />
+                                </Core:EventTriggerBehavior>
+                            </interactivity:Interaction.Behaviors>
+                        </Grid>
+                        
                     </Border>
                 </DataTemplate>
             </ListView.ItemTemplate>
