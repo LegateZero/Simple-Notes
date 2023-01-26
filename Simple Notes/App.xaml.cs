@@ -19,6 +19,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Simple_Notes.Services;
 using Simple_Notes.Services.Interfaces;
+using SimpleNotes.BAL.Services;
+using SimpleNotes.BAL.Services.Interfaces;
 using SimpleNotes.DAL.Context;
 using SimpleNotes.DAL.Entities;
 
@@ -38,6 +40,10 @@ namespace Simple_Notes
         {
             this.InitializeComponent();
             this.Suspending += OnSuspending;
+            using (var context = new SimpleNotesDb())
+            {
+                context.Database.EnsureCreated();
+            }
             Container = ConfigureDependencyInjection();
         }
 
@@ -115,7 +121,7 @@ namespace Simple_Notes
         {
             var serviceCollection = new ServiceCollection();
             serviceCollection.AddDbContext<SimpleNotesDb>();
-            serviceCollection.AddScoped<INoteService>()
+            serviceCollection.AddScoped<INoteService, NoteService>();
             
 
             return serviceCollection.BuildServiceProvider();

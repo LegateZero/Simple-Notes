@@ -17,7 +17,7 @@ namespace SimpleNotes.DAL.Context
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            string connectionString = @"Data Source=c:\\SimpleNotes.db";
+            string connectionString = @"Filename=SimpleNotes.db";
             optionsBuilder.UseSqlite(connectionString);
         }
     }

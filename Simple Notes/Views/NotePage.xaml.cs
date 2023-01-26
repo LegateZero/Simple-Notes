@@ -15,7 +15,9 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using SimpleNotes.BAL.Services.Interfaces;
 using SimpleNotes.DAL.Context;
+using SimpleNotes.DAL.Entities;
 
 // Документацию по шаблону элемента "Пустая страница" см. по адресу https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -29,7 +31,7 @@ namespace Simple_Notes.Views
 
         public NotePage()
         {
-            Debug.WriteLine("Test1");
+            //Debug.WriteLine("Test1");
             this.InitializeComponent();
             
         }
@@ -43,10 +45,12 @@ namespace Simple_Notes.Views
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-            Debug.WriteLine("Test2");
-            var viewModel = ((NotePageViewModel)(e.Parameter));
-            Debug.WriteLine(viewModel);
-            var containter = ((App)App.Current).Container;
+
+            var currentNote = ((Note)(e.Parameter));
+            var container = ((App)App.Current).Container;
+            var noteService = (INoteService)container.GetService(typeof(INoteService));
+            var viewModel = new NotePageViewModel(noteService, currentNote);
+
             DataContext = viewModel;
             viewModel.IsTextHasUnsavedChanges = false;
         }

@@ -15,11 +15,15 @@ namespace SimpleNotes.BAL.Services
         {
             _context = context;
         }
-        public void DeleteNote(int noteId)
+
+        public Note GetNote(int noteId)
         {
-            var noteToDelete = _context.Notes.Local.FirstOrDefault(note => note.NoteId == noteId) ?? new Note(){NoteId = noteId};
-            _context.Notes.Remove(noteToDelete);
-            _context.SaveChanges();
+            return _context.Notes.FirstOrDefault(note => note.NoteId == noteId);
+        }
+
+        public IList<Note> GetAllNotes()
+        {
+            return _context.Notes.ToList();
         }
 
         public void AddNote(Note note)
@@ -28,9 +32,21 @@ namespace SimpleNotes.BAL.Services
             _context.SaveChanges();
         }
 
-        public IEnumerable<Note> GetAllNotes()
+        public void UpdateNote(Note noteUpdate)
         {
-            return _context.Notes.ToList();
+            var tempNote = _context.Notes.FirstOrDefault(note => note.NoteId == noteUpdate.NoteId);
+            if (tempNote == null) throw new KeyNotFoundException();
+            _context.Notes.Update(noteUpdate);
+            _context.SaveChanges();
+        }
+
+
+        
+        public void DeleteNote(int noteId)
+        {
+            var noteToDelete = _context.Notes.Local.FirstOrDefault(note => note.NoteId == noteId) ?? new Note() { NoteId = noteId };
+            _context.Notes.Remove(noteToDelete);
+            _context.SaveChanges();
         }
     }
 }

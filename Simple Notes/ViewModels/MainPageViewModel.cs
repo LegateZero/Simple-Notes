@@ -27,14 +27,11 @@ namespace Simple_Notes.ViewModels
 
     internal class MainPageViewModel : ViewModel
     {
-        #region Fields
+
 
         private readonly INoteService _noteService;
 
-        #endregion
 
-
-        #region Title : string - Page title
 
         private string _title = "Проверка";
 
@@ -44,22 +41,9 @@ namespace Simple_Notes.ViewModels
             set => SetField(ref _title, value);
         }
 
-        #endregion
 
 
-        #region Counter : int - Counter
 
-        private int _counter;
-
-        public int Counter
-        {
-            get => _counter;
-            set => SetField(ref _counter, value);
-        }
-
-        #endregion
-
-        #region Note : Note - SelectedNote
 
         private Note _selectedNote;
 
@@ -69,10 +53,8 @@ namespace Simple_Notes.ViewModels
             set => SetField(ref _selectedNote, value);
         }
 
-        #endregion
 
 
-        #region Sort : SortType - Sorting Direction
 
         private SortType _sort = SortType.Descending;
 
@@ -86,77 +68,52 @@ namespace Simple_Notes.ViewModels
             }
         }
 
-        #endregion
 
 
-        private ICommand _increment;
-        public ICommand Increment => _increment ?? (_increment = new LambdaCommand(OnIncrementCommandExecuted, CanIncrementCommandExecuted));
+        private ICommand _sortAscendingCommand;
 
-        private void OnIncrementCommandExecuted()
-        {
-            Counter++;
-        }
+        public ICommand SortAscendingCommand =>
+            _sortAscendingCommand ?? (_sortAscendingCommand = new LambdaCommand(OnSortAscendingCommandExecuted, CanSortAscendingCommandExecute));
 
-        private bool CanIncrementCommandExecuted()
-        {
-            return Counter < 10;
-        }
+        private bool CanSortAscendingCommandExecute(object p) => Sort == SortType.Descending;
 
-
-
-        #region SortAcending - Explanation
-
-        private ICommand _SortAcending;
-
-        public ICommand SortAcending =>
-            _SortAcending ?? (_SortAcending =  new LambdaCommand(OnSortAcendingExecuted, CanSortAcendingExecute));
-
-        private bool CanSortAcendingExecute(object p) => Sort == SortType.Descending;
-
-        private void OnSortAcendingExecuted(object p)
+        private void OnSortAscendingCommandExecuted(object p)
         {
             Sort = SortType.Ascending;
         }
 
-        #endregion
 
-        #region SortDescending - Explanation
+        private ICommand _sortDescendingCommand;
 
-        private ICommand _SortDescending;
+        public ICommand SortDescendingCommand =>
+            _sortDescendingCommand
+            ?? (_sortDescendingCommand = new LambdaCommand(OnSortDescendingCommandExecuted, CanSortDescendingCommandExecute));
 
-        public ICommand SortDescending =>
-            _SortDescending ?? (_SortDescending = new LambdaCommand(OnSortDescendingExecuted, CanSortDescendingExecute));
+        private bool CanSortDescendingCommandExecute(object p) =>
+            Sort == SortType.Ascending;
 
-        private bool CanSortDescendingExecute(object p) => Sort == SortType.Ascending;
-
-        private void OnSortDescendingExecuted(object p)
+        private void OnSortDescendingCommandExecuted(object p)
         {
             Sort = SortType.Descending;
 
         }
 
-        #endregion
 
-
-        #region SortDescending - Explanation
 
         private ICommand _openNoteCommand;
 
         public ICommand OpenNoteCommand =>
             _openNoteCommand ?? (_openNoteCommand = new LambdaCommand(OnOpenNoteCommandExecuted, CanOpenNoteCommandExecute));
 
-        private bool CanOpenNoteCommandExecute(object p) => true;
+        private bool CanOpenNoteCommandExecute(object p) =>
+            true;
 
         private void OnOpenNoteCommandExecuted(object p)
         {
             Frame frame = Window.Current.Content as Frame;
-            var notePageViewModel = new NotePageViewModel(SelectedNote);
-            frame.Navigate(typeof(NotePage), notePageViewModel);
+            frame.Navigate(typeof(NotePage), SelectedNote);
         }
 
-        #endregion
-
-        #region DeleteNoteCommand - Note deletion command
 
         private ICommand _deleteNoteCommand;
 
@@ -167,51 +124,60 @@ namespace Simple_Notes.ViewModels
 
         private void OnDeleteNoteCommandExecuted(object p)
         {
-            _notesSource.Source = _notesSource.View.Where(note => ((Note)note).NoteId != ((Note)p).NoteId);
+            for (int i = 0; i < _notes.Count; i++)
+            {
+                if (_notes[i].NoteId == ((Note)p).NoteId)
+                {
+                    _notes.Remove(Notes[i]);
+                    break;
+                }
+            }
+
+            _noteService.DeleteNote(((Note)p).NoteId);
             OnPropertyChanged(nameof(Notes));
         }
 
-        #endregion
 
-        private CollectionViewSource _notesSource = new CollectionViewSource();
+        private ICommand _createNoteCommand;
 
-        public ICollectionView Notes
+        public ICommand CreateNoteCommand =>
+            _createNoteCommand ?? (_createNoteCommand = new LambdaCommand(OnCreateNoteCommandExecuted, CanCreateNoteCommandExecute));
+
+        private bool CanCreateNoteCommandExecute(object p) => true;
+
+        private void OnCreateNoteCommandExecuted(object p)
         {
-            get
-            {
-                var filtered = new CollectionViewSource();
-                filtered.Source = Sort == SortType.Ascending 
-                    ? _notesSource.View.OrderBy(note => ((Note)note).Header) 
-                    : _notesSource.View.OrderByDescending(note => ((Note)note).Header);
-                if (Filter.Length == 0)
-                {
-                    return filtered.View;
-                }
-
-                
-                filtered.Source = filtered.View.Where(note => ((Note)note).Header.Contains(Filter));
-                return filtered.View;
-            }
+            Frame frame = Window.Current.Content as Frame;
+            frame.Navigate(typeof(NotePage));
         }
 
 
-        public ICollectionView SortedNotes
+
+
+        private ObservableCollection<Note> _notes;
+
+        public ObservableCollection<Note> Notes
         {
             get
             {
-                if (Filter.Length == 0)
+                ObservableCollection<Note> temp;
+                if (Filter.Length > 0)
                 {
-                    return _notesSource.View;
+                    temp = new ObservableCollection<Note>(_notes.Where(note => note.Header.Contains(Filter)));
+                }
+                else
+                {
+                    temp = _notes;
                 }
 
-                var filtered = new CollectionViewSource();
-                filtered.Source = _notesSource.View.Where(note => ((Note)note).Header.Contains(Filter));
-                return filtered.View;
+                temp = Sort == SortType.Ascending
+                    ? new ObservableCollection<Note>(temp.OrderBy(note => note.Header))
+                    : new ObservableCollection<Note>(temp.OrderByDescending(note => note.Header));
+                return temp;
+
             }
         }
 
-
-        #region Filter : string - Text filter
 
         private string _filter = string.Empty;
 
@@ -225,16 +191,14 @@ namespace Simple_Notes.ViewModels
             }
         }
 
-        #endregion
-
-
-
 
 
         public MainPageViewModel(INoteService noteService)
         {
             _noteService = noteService;
-            _notesSource.Source = Enumerable.Range(1, 20).Select(i => new Note(){ Body = $"Body of {i} note", Header = $"Header of {i} note", NoteId = i});
+            _notes = new ObservableCollection<Note>(noteService.GetAllNotes());
+
+            //_notesSource.Source = Enumerable.Range(1, 20).Select(i => new Note(){ Body = $"Body of {i} note", Header = $"Header of {i} note", NoteId = i});
         }
     }
 }

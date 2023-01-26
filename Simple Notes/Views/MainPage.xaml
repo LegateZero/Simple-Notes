@@ -23,9 +23,9 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-                <Button Content="Добавить заметку" HorizontalAlignment="Left" VerticalAlignment="Stretch" Command="{x:Bind  ViewModel.OpenNoteCommand}"/>
+                <Button Content="Добавить заметку" HorizontalAlignment="right" VerticalAlignment="Stretch" Command="{Binding CreateNoteCommand}" Background="DarkGray"/>
                 <TextBox PlaceholderText="Поиск..." HorizontalAlignment="Center" MinWidth="250" Text="{Binding Filter, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-                <MenuBar HorizontalAlignment="Right" Height="33">
+                <MenuBar HorizontalAlignment="left" Height="33">
                     <MenuBarItem VerticalAlignment="Stretch"  Title="Сортировка">
                     <MenuFlyoutItem Text="A-Z" Command="{Binding SortDescending}"/>
                     <MenuFlyoutItem Text="Z-A" Command="{Binding SortAcending}"/>

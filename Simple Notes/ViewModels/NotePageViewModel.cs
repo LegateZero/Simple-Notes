@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -10,6 +11,7 @@ using Simple_Notes.ViewModels.Base;
 using Simple_Notes.Views;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml;
+using SimpleNotes.BAL.Services.Interfaces;
 using SimpleNotes.DAL.Context;
 using SimpleNotes.DAL.Entities;
 
@@ -17,10 +19,10 @@ namespace Simple_Notes.ViewModels
 {
     internal class NotePageViewModel : ViewModel
     {
-        #region Header : string - Note header
+        private readonly INoteService _noteService;
 
-        private string _header;
 
+        private string _header = string.Empty;
         public string Header
         {
             get => _header;
@@ -30,12 +32,8 @@ namespace Simple_Notes.ViewModels
             }
         }
 
-        #endregion
 
-        #region Body : string - Note body
-
-        private string _body;
-
+        private string _body = string.Empty;
         public string Body
         {
             get => _body;
@@ -46,24 +44,8 @@ namespace Simple_Notes.ViewModels
             }
         }
 
-        #endregion
-
-
-        public NotePageViewModel()
-        {
-
-        }
-
-        public NotePageViewModel(string header, string body)
-        {
-            _header = header;
-            _body = body;
-        }
-
-        #region IsTexthasUnsafedChanges : bool - Changes Indicator
 
         private bool _isTextHasUnsavedChanges = false;
-
         public bool IsTextHasUnsavedChanges
         {
             get => _isTextHasUnsavedChanges;
@@ -74,28 +56,43 @@ namespace Simple_Notes.ViewModels
             }
         }
 
-        #endregion
-
-        #region SortDescending - Explanation
 
         private ICommand _saveChangesCommand;
 
         public ICommand SaveChangesCommand =>
-            _saveChangesCommand ?? (_saveChangesCommand = new LambdaCommand(OnSaveChangesCommandExecuted, CanSaveChangesCommandExecute));
+            _saveChangesCommand 
+            ?? (_saveChangesCommand = new LambdaCommand(OnSaveChangesCommandExecuted, CanSaveChangesCommandExecute));
 
-        private bool CanSaveChangesCommandExecute(object p) => IsTextHasUnsavedChanges;
+        private bool CanSaveChangesCommandExecute(object p) => 
+            IsTextHasUnsavedChanges && Header.Length > 0 && Body.Length > 0;
 
         private void OnSaveChangesCommandExecuted(object p)
         {
-            Debug.WriteLine((string)p);
+            if (CurrentNote == null)
+            {
+                CurrentNote = new Note()
+                {
+                    Header = this.Header,
+                    Body = this.Body,
+                };
+                _noteService.AddNote(CurrentNote);
+            }
+            else
+            {
+                CurrentNote.Header = this.Header;
+                CurrentNote.Body = this.Body;
+                _noteService.UpdateNote(CurrentNote);
+            }
+
             IsTextHasUnsavedChanges = false;
         }
 
-        #endregion
 
         private ICommand _goBackCommand;
 
-        public ICommand GoBackCommand => _goBackCommand ?? (_goBackCommand = new LambdaCommand(OnGoBackCommandExecuted));
+        public ICommand GoBackCommand => 
+            _goBackCommand 
+            ?? (_goBackCommand = new LambdaCommand(OnGoBackCommandExecuted));
 
         private async void OnGoBackCommandExecuted(object p)
         {
@@ -113,16 +110,28 @@ namespace Simple_Notes.ViewModels
             }
         }
 
-        private bool CanGoBackCommandExecuted(object p)
+        public NotePageViewModel(INoteService noteService, Note note = null)
         {
-            return true;
+            _noteService = noteService;
+            if (note != null)
+            {
+                Header = note.Header;
+                Body = note.Body;
+            }
+
+            CurrentNote = note;
+        }
+        
+
+
+        private Note _currentNote;
+
+        public Note CurrentNote
+        {
+            get => _currentNote;
+            set => SetField(ref _currentNote, value);
         }
 
-        public NotePageViewModel(Note note)
-        {
-            Header = note.Header;
-            Body = note.Body;
-        }
 
     }
 }
