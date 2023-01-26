@@ -48,6 +48,7 @@ namespace Simple_Notes.Views
             Debug.WriteLine(viewModel);
             var containter = ((App)App.Current).Container;
             DataContext = viewModel;
+            viewModel.IsTextHasUnsavedChanges = false;
         }
     }
 }

@@ -92,8 +92,30 @@ namespace Simple_Notes.ViewModels
 
         #endregion
 
-        
+        private ICommand _goBackCommand;
 
+        public ICommand GoBackCommand => _goBackCommand ?? (_goBackCommand = new LambdaCommand(OnGoBackCommandExecuted));
+
+        private async void OnGoBackCommandExecuted(object p)
+        {
+            var dialog = new ContentDialog()
+                {
+                    Title = "Unsaved changes",
+                    Content = "You have unsaved changes, are you sure want to exit and delete them?",
+                    PrimaryButtonText = "Ok",
+                    CloseButtonText = "Cancel"
+                };
+            if (!IsTextHasUnsavedChanges || await dialog.ShowAsync() == ContentDialogResult.Primary)
+            {
+                Frame frame = Window.Current.Content as Frame;
+                frame.GoBack();
+            }
+        }
+
+        private bool CanGoBackCommandExecuted(object p)
+        {
+            return true;
+        }
 
         public NotePageViewModel(Note note)
         {

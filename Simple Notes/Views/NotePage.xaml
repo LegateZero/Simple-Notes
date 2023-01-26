@@ -20,7 +20,7 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-                <Button Content="Назад" HorizontalAlignment="Left" VerticalAlignment="Stretch"/>
+                <Button Content="Назад" HorizontalAlignment="Left" VerticalAlignment="Stretch" Command="{Binding GoBackCommand}"/>
                 <Button Content="Сохранить" HorizontalAlignment="Right" VerticalAlignment="Stretch" Command="{Binding SaveChangesCommand}"/>
                
             </Grid>
