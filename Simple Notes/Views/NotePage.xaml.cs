@@ -12,15 +12,10 @@ namespace Simple_Notes.Views
 
     public sealed partial class NotePage : Page
     {
-
         public NotePage()
         {
-            this.InitializeComponent();
+            InitializeComponent();
         }
 
-        protected override void OnNavigatedTo(NavigationEventArgs e)
-        {
-           
-        }
     }
 }

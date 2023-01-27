@@ -18,13 +18,13 @@ namespace Simple_Notes
         {
             var coreTitleBar = CoreApplication.GetCurrentView().TitleBar;
             coreTitleBar.ExtendViewIntoTitleBar = false;
-            this.InitializeComponent();
+            InitializeComponent();
         }
 
         private void KeyboardAccelerator_OnInvoked(KeyboardAccelerator sender, KeyboardAcceleratorInvokedEventArgs args)
         {
-            if (this.ViewList.FocusState == FocusState.Unfocused)
-                this.ViewList.Focus(FocusState.Keyboard);
+            if (ViewList.FocusState == FocusState.Unfocused)
+                ViewList.Focus(FocusState.Keyboard);
         }
     }
 }

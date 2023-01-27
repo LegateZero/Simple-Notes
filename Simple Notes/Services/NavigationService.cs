@@ -74,10 +74,6 @@ namespace Simple_Notes.Services
             }
         }
 
-        public static bool Navigate<T>(object parameter = null, NavigationTransitionInfo infoOverride = null)
-            where T : Page
-            => Navigate(typeof(T), parameter, infoOverride);
-
         private static void RegisterFrameEvents()
         {
             if (_frame != null)

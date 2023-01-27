@@ -30,8 +30,16 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-                <Button Content="Назад" HorizontalAlignment="Left" VerticalAlignment="Stretch" Command="{Binding GoBackCommand}"/>
-                <Button Content="Сохранить" HorizontalAlignment="Right" VerticalAlignment="Stretch" Command="{Binding SaveChangesCommand}"/>
+                <Button HorizontalAlignment="Left" VerticalAlignment="Stretch" Command="{Binding GoBackCommand}" Background="Transparent">
+                    <Button.Content>
+                        <FontIcon Foreground="DimGray" FontFamily="Segoe MDL2 Assets" Glyph="&#xE830;" />
+                    </Button.Content>
+                </Button>
+                <Button HorizontalAlignment="Right" VerticalAlignment="Stretch" Command="{Binding SaveChangesCommand}" Background="Transparent">
+                    <Button.Content>
+                        <FontIcon Foreground="DimGray" FontFamily="Segoe MDL2 Assets" Glyph="&#xE74E;" />
+                    </Button.Content>
+                </Button>
             </Grid>
         </Border>
         <Grid Grid.Row="1">
@@ -42,9 +50,9 @@
             <TextBox Grid.Row="0" PlaceholderText="Заголовок заметки" FontSize="36" FontWeight="Bold" MaxHeight="120" ScrollViewer.VerticalScrollBarVisibility="Auto" 
                      VerticalContentAlignment="Center" BorderThickness="2 1 2 1" Text="{Binding Header, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
                      TextWrapping="Wrap" MaxLength="255"/>
-            <TextBox Grid.Row="1" PlaceholderText="Ваша заметка" FontSize="21"  BorderThickness="2 1 2 1" 
+            <TextBox Grid.Row="1" PlaceholderText="Тело заметки" FontSize="21"  BorderThickness="2 1 2 1" 
                      Text="{Binding Body, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" TextWrapping="Wrap" 
                      AcceptsReturn="True" ScrollViewer.VerticalScrollBarVisibility="Auto"/>
-</Grid>
+        </Grid>
     </Grid>
 </Page>
