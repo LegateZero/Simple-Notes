@@ -13,7 +13,6 @@
     xmlns:Core="using:Microsoft.Xaml.Interactions.Core"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
-    d:DataContext="{d:DesignInstance Type=vm:MainPageViewModel, IsDesignTimeCreatable=True}"
     DataContext="{Binding MainPage,Source={StaticResource Locator}}"
     >
     <interactivity:Interaction.Behaviors>
@@ -34,7 +33,7 @@
                 <Button HorizontalAlignment="right" VerticalAlignment="Stretch" 
                         Command="{Binding CreateNoteCommand}" CommandParameter="{Binding Source={StaticResource NotePage}}" Background="DarkGray">
                     <Button.Content>
-                        <FontIcon Foreground="DimGray" FontFamily="Segoe MDL2 Assets" Glyph="&#xE710;" />
+                        <FontIcon Foreground="Black" FontFamily="Segoe MDL2 Assets" Glyph="&#xE710;" />
                     </Button.Content>
                 </Button>
                 <TextBox PlaceholderText="Поиск..." HorizontalAlignment="Center" MinWidth="250" Text="{Binding Filter, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
@@ -57,7 +56,7 @@
             </ListView.ItemContainerStyle>
             <ListView.ItemTemplate >
                 <DataTemplate >
-                    <Border HorizontalAlignment="Stretch" VerticalAlignment="Stretch" IsHitTestVisible="True">
+                    <Border HorizontalAlignment="Stretch" VerticalAlignment="Stretch" IsHitTestVisible="True" x:Name="eee">
                         <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" IsHitTestVisible="True" IsDoubleTapEnabled="True" Background="Transparent">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="80*"/>
@@ -68,9 +67,9 @@
                                         LineStackingStrategy="MaxHeight" FontSize="24">
                         </TextBlock>
                             <Button Grid.Column="1" HorizontalAlignment="Right"  Command="{Binding DataContext.DeleteNoteCommand,ElementName=ViewList}" 
-                                    CommandParameter="{Binding}" Background="Transparent">
+                                    CommandParameter="{Binding}" Background="Transparent" >
                                 <Button.Content>
-                                    <FontIcon Foreground="DimGray" FontFamily="Segoe MDL2 Assets" Glyph="&#xE74D;" />
+                                    <FontIcon Foreground="Black" FontFamily="Segoe MDL2 Assets" Glyph="&#xE74D;" />
                                 </Button.Content>
                             </Button>
                             <interactivity:Interaction.Behaviors>
@@ -89,8 +88,8 @@
             </interactivity:Interaction.Behaviors>
         </ListView>
         <Grid.KeyboardAccelerators>
-            <KeyboardAccelerator Key="Up" Invoked="KeyboardAccelerator_OnInvoked"></KeyboardAccelerator>
-            <KeyboardAccelerator Key="Down" Invoked="KeyboardAccelerator_OnInvoked"></KeyboardAccelerator>
+            <KeyboardAccelerator Key="Up" Invoked="KeyboardAccelerator_OnInvoked"/>
+            <KeyboardAccelerator Key="Down" Invoked="KeyboardAccelerator_OnInvoked"/>
         </Grid.KeyboardAccelerators>
     </Grid>
 </Page>
