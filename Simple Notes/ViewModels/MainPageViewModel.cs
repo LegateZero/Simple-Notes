@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows.Input;
 using Windows.System;
@@ -22,15 +23,6 @@ namespace Simple_Notes.ViewModels
     {
 
         private readonly INoteService _noteService;
-
-        private string _title = "Список заметок";
-
-        public string Title
-        {
-            get => _title;
-            set => SetField(ref _title, value);
-        }
-
 
         private Note _selectedNote;
 
@@ -109,7 +101,7 @@ namespace Simple_Notes.ViewModels
         private void OnOpenNoteCommandExecuted(object p)
         {
             if (p is KeyRoutedEventArgs args && args.Key != VirtualKey.Enter) return;
-            NavigationService.Navigate<NotePage>(SelectedNote);
+            NavigationService.Navigate(p.GetType(), SelectedNote);
         }
 
 
@@ -133,7 +125,7 @@ namespace Simple_Notes.ViewModels
             }
 
             _noteService.DeleteNote(((Note)p).NoteId);
-            //OnPropertyChanged(nameof(Notes));
+            OnPropertyChanged(nameof(Notes));
         }
 
 
@@ -148,7 +140,7 @@ namespace Simple_Notes.ViewModels
 
         private void OnCreateNoteCommandExecuted(object p)
         {
-            NavigationService.Navigate<NotePage>();
+            NavigationService.Navigate(p.GetType());
         }
 
         public MainPageViewModel(INoteService noteService)

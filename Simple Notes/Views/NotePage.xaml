@@ -8,7 +8,9 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
-    d:DataContext="{d:DesignInstance Type=vm:NotePageViewModel, IsDesignTimeCreatable=True}">
+    d:DataContext="{d:DesignInstance Type=vm:NotePageViewModel, IsDesignTimeCreatable=True}"
+    DataContext="{Binding NotePage, Source={StaticResource Locator}}"
+    >
 
     <Grid>
         <Grid.RowDefinitions>

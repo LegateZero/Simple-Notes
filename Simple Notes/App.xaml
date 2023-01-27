@@ -2,6 +2,13 @@
     x:Class="Simple_Notes.App"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:locator="using:Simple_Notes.Services"
+    xmlns:view="using:Simple_Notes.Views"
     xmlns:local="using:Simple_Notes">
-
+    <Application.Resources>
+        <ResourceDictionary>
+            <locator:ViewModelLocator x:Key="Locator"/>
+            <view:NotePage x:Key="NotePage"/>
+        </ResourceDictionary>
+    </Application.Resources>
 </Application>

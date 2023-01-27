@@ -13,7 +13,9 @@
     xmlns:Core="using:Microsoft.Xaml.Interactions.Core"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
-    d:DataContext="{d:DesignInstance Type=vm:MainPageViewModel, IsDesignTimeCreatable=True}">
+    d:DataContext="{d:DesignInstance Type=vm:MainPageViewModel, IsDesignTimeCreatable=True}"
+    DataContext="{Binding MainPage,Source={StaticResource Locator}}"
+    >
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="33"/>
@@ -24,7 +26,7 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-                <Button Content="Добавить заметку" HorizontalAlignment="right" VerticalAlignment="Stretch" Command="{Binding CreateNoteCommand}" Background="DarkGray"/>
+                <Button Content="Добавить заметку" HorizontalAlignment="right" VerticalAlignment="Stretch" Command="{Binding CreateNoteCommand}" CommandParameter="{Binding Source={StaticResource NotePage}}" Background="DarkGray"/>
                 <TextBox PlaceholderText="Поиск..." HorizontalAlignment="Center" MinWidth="250" Text="{Binding Filter, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                 <MenuBar HorizontalAlignment="left" Height="33">
                     <MenuBarItem VerticalAlignment="Stretch"  Title="Сортировка">
@@ -59,7 +61,7 @@
                             </Button>
                             <interactivity:Interaction.Behaviors>
                                 <Core:EventTriggerBehavior EventName="DoubleTapped">
-                                    <Core:InvokeCommandAction Command="{Binding DataContext.OpenNoteCommand,ElementName=ViewList}" />
+                                    <Core:InvokeCommandAction Command="{Binding DataContext.OpenNoteCommand,ElementName=ViewList}" CommandParameter="{Binding Source={StaticResource NotePage}}" />
                                 </Core:EventTriggerBehavior>
                             </interactivity:Interaction.Behaviors>
                         </Grid>
