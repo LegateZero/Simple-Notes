@@ -16,19 +16,11 @@ namespace Simple_Notes.Views
         public NotePage()
         {
             this.InitializeComponent();
-            
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            var currentNote = ((Note)(e.Parameter));
-            var viewModel = DataContext as NotePageViewModel;
-            if (currentNote != null)
-            {
-                viewModel.CurrentNote = currentNote;
-                viewModel.Header = currentNote.Header;
-                viewModel.Body = currentNote.Body;
-            }
+           
         }
     }
 }

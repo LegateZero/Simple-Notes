@@ -6,6 +6,7 @@ using Windows.UI.Xaml.Controls;
 using Simple_Notes.Services;
 using SimpleNotes.BAL.Services.Interfaces;
 using SimpleNotes.DAL.Entities;
+using System.Collections.ObjectModel;
 
 namespace Simple_Notes.ViewModels
 {
@@ -13,6 +14,14 @@ namespace Simple_Notes.ViewModels
     {
         private readonly INoteService _noteService;
 
+
+        private Note _currentNote;
+
+        public Note CurrentNote
+        {
+            get => _currentNote;
+            set => SetField(ref _currentNote, value);
+        }
 
         private string _header = string.Empty;
         public string Header
@@ -47,6 +56,8 @@ namespace Simple_Notes.ViewModels
                 OnPropertyChanged(nameof(SaveChangesCommand));
             }
         }
+
+
 
 
         private ICommand _saveChangesCommand;
@@ -90,10 +101,10 @@ namespace Simple_Notes.ViewModels
         {
             var dialog = new ContentDialog()
                 {
-                    Title = "Unsaved changes",
-                    Content = "You have unsaved changes, are you sure want to exit and delete them?",
-                    PrimaryButtonText = "Ok",
-                    CloseButtonText = "Cancel"
+                    Title = "Несохраненные изменения",
+                    Content = "Вы уверены, что хотите покинуть страницу? Все несохраненные изменения будут потеряны.",
+                    PrimaryButtonText = "Уйти",
+                    CloseButtonText = "Отмена"
                 };
             if (!IsTextHasUnsavedChanges || await dialog.ShowAsync() == ContentDialogResult.Primary)
             {
@@ -101,28 +112,28 @@ namespace Simple_Notes.ViewModels
             }
         }
 
-        public NotePageViewModel(INoteService noteService, Note note = null)
+
+        private ICommand _loadedCommand;
+
+        public ICommand LoadedCommand =>
+            _loadedCommand ?? (_loadedCommand = new LambdaCommand(OnLoadedCommandExecuted));
+
+        private void OnLoadedCommandExecuted(object p)
         {
-            _noteService = noteService;
-            if (note != null)
+            if (p is Note note)
             {
                 Header = note.Header;
                 Body = note.Body;
+                CurrentNote = note;
+                IsTextHasUnsavedChanges = false;
             }
-
-            CurrentNote = note;
         }
-        
 
 
-        private Note _currentNote;
-
-        public Note CurrentNote
+        public NotePageViewModel(INoteService noteService)
         {
-            get => _currentNote;
-            set => SetField(ref _currentNote, value);
+            _noteService = noteService;
         }
-
 
     }
 }

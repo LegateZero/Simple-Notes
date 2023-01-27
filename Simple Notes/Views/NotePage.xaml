@@ -6,12 +6,20 @@
     xmlns:vm="using:Simple_Notes.ViewModels"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:behaviors="using:Microsoft.Toolkit.Uwp.UI.Behaviors"
+    xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
+    xmlns:Core="using:Microsoft.Xaml.Interactions.Core"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     d:DataContext="{d:DesignInstance Type=vm:NotePageViewModel, IsDesignTimeCreatable=True}"
     DataContext="{Binding NotePage, Source={StaticResource Locator}}"
     >
-
+    <interactivity:Interaction.Behaviors>
+        <Core:EventTriggerBehavior EventName="Loaded">
+            <Core:InvokeCommandAction Command="{Binding LoadedCommand}" 
+                                      CommandParameter="{Binding MainPage.SelectedNote,Source={StaticResource Locator}}"/>
+        </Core:EventTriggerBehavior>
+    </interactivity:Interaction.Behaviors>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="33"/>

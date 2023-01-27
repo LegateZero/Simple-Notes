@@ -16,6 +16,11 @@
     d:DataContext="{d:DesignInstance Type=vm:MainPageViewModel, IsDesignTimeCreatable=True}"
     DataContext="{Binding MainPage,Source={StaticResource Locator}}"
     >
+    <interactivity:Interaction.Behaviors>
+        <Core:EventTriggerBehavior EventName="Loaded">
+            <Core:InvokeCommandAction Command="{Binding LoadedCommand}"/>
+        </Core:EventTriggerBehavior>
+    </interactivity:Interaction.Behaviors>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="33"/>

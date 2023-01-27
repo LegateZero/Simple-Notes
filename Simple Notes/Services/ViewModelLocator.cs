@@ -6,8 +6,10 @@ namespace Simple_Notes.Services
 {
     internal class ViewModelLocator
     {
+        private MainPageViewModel _mainPage;
         public MainPageViewModel MainPage => 
-            ActivatorUtilities.GetServiceOrCreateInstance<MainPageViewModel>(((App)App.Current).Container);
+            _mainPage 
+            ?? (_mainPage = ActivatorUtilities.GetServiceOrCreateInstance<MainPageViewModel>(((App)App.Current).Container));
 
         public NotePageViewModel NotePage =>
             ActivatorUtilities.GetServiceOrCreateInstance<NotePageViewModel>(((App)App.Current).Container);

@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Windows.Input;
@@ -10,6 +11,7 @@ using Simple_Notes.ViewModels.Base;
 using Simple_Notes.Views;
 using SimpleNotes.BAL.Services.Interfaces;
 using SimpleNotes.DAL.Entities;
+using SimpleNotes.BAL.Services;
 
 namespace Simple_Notes.ViewModels
 {
@@ -56,12 +58,12 @@ namespace Simple_Notes.ViewModels
             }
         }
 
-        private readonly ObservableCollection<Note> _notes;
+        private ObservableCollection<Note> _notes = new ObservableCollection<Note>();
 
         public ObservableCollection<Note> Notes => 
             Sort == SortType.Descending
-                ? new ObservableCollection<Note>(_notes.Where(note => note.Header.Contains(Filter)).OrderBy(note => note.Header))
-                : new ObservableCollection<Note>(_notes.Where(note => note.Header.Contains(Filter)).OrderByDescending(note => note.Header));
+                ? new ObservableCollection<Note>(_notes.Where(note => note.Header.ToLower().Contains(Filter.ToLower())).OrderBy(note => note.Header))
+                : new ObservableCollection<Note>(_notes.Where(note => note.Header.ToLower().Contains(Filter.ToLower())).OrderByDescending(note => note.Header));
 
         private ICommand _sortAscendingCommand;
 
@@ -101,7 +103,7 @@ namespace Simple_Notes.ViewModels
         private void OnOpenNoteCommandExecuted(object p)
         {
             if (p is KeyRoutedEventArgs args && args.Key != VirtualKey.Enter) return;
-            NavigationService.Navigate(p.GetType(), SelectedNote);
+            NavigationService.Navigate(p.GetType());
         }
 
 
@@ -143,10 +145,25 @@ namespace Simple_Notes.ViewModels
             NavigationService.Navigate(p.GetType());
         }
 
+
+
+        private ICommand _loadedCommand;
+
+        public ICommand LoadedCommand =>
+            _loadedCommand ?? (_loadedCommand =  new LambdaCommand(OnLoadedCommandExecuted));
+
+        private void OnLoadedCommandExecuted(object p)
+        {
+            _notes = new ObservableCollection<Note>(_noteService.GetAllNotes());
+            OnPropertyChanged(nameof(Notes));
+        }
+
+
         public MainPageViewModel(INoteService noteService)
         {
             _noteService = noteService;
-            _notes = new ObservableCollection<Note>(noteService.GetAllNotes());
+            Debug.WriteLine("Constructor");
+
         }
     }
 }
