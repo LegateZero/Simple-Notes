@@ -8,6 +8,7 @@
     xmlns:vm="using:Simple_Notes.ViewModels"
     xmlns:interop="using:Windows.UI.Xaml.Interop"
     xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+    xmlns:behaviors="using:Microsoft.Toolkit.Uwp.UI.Behaviors"
     xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
     xmlns:Core="using:Microsoft.Xaml.Interactions.Core"
     mc:Ignorable="d"
@@ -27,38 +28,53 @@
                 <TextBox PlaceholderText="Поиск..." HorizontalAlignment="Center" MinWidth="250" Text="{Binding Filter, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                 <MenuBar HorizontalAlignment="left" Height="33">
                     <MenuBarItem VerticalAlignment="Stretch"  Title="Сортировка">
-                    <MenuFlyoutItem Text="A-Z" Command="{Binding SortDescending}"/>
-                    <MenuFlyoutItem Text="Z-A" Command="{Binding SortAcending}"/>
+                    <MenuFlyoutItem Text="A-Z" Command="{Binding SortDescendingCommand}"/>
+                    <MenuFlyoutItem Text="Z-A" Command="{Binding SortAscendingCommand}"/>
                 </MenuBarItem>
                 </MenuBar>
             </Grid>
-        </Border>
-        <ListView Grid.Row="1" ItemsSource="{Binding Notes}" x:Name="ViewList" 
-                  SelectedItem="{Binding SelectedNote, Mode=TwoWay}" SelectionMode="Single" Background="{ThemeResource AppBarBorderThemeBrush }"> 
+        </Border> 
+        <ListView Grid.Row="1" ItemsSource="{Binding Notes}" x:Name="ViewList"
+                  SelectedItem="{Binding SelectedNote, Mode=TwoWay}" SelectionMode="Single"
+                  Background="{ThemeResource AppBarBorderThemeBrush }" > 
             <ListView.ItemContainerStyle>
                 <Style TargetType="ListViewItem">
                     <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
                 </Style>
             </ListView.ItemContainerStyle>
-            <ListView.ItemTemplate>
+            <ListView.ItemTemplate >
                 <DataTemplate >
                     <Border HorizontalAlignment="Stretch" VerticalAlignment="Stretch" IsHitTestVisible="True">
-                        <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" IsHitTestVisible="True" IsDoubleTapEnabled="True" Background="Transparent" >
-                            <TextBlock Text="{Binding Header}" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Center">
+                        <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" IsHitTestVisible="True" IsDoubleTapEnabled="True" Background="Transparent">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="80*"/>
+                                <ColumnDefinition Width="20*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="{Binding Header}" FontWeight="Bold" HorizontalAlignment="Left" 
+                                       VerticalAlignment="Center" MaxHeight="180" MaxLines="3" TextWrapping="Wrap" 
+                                        LineStackingStrategy="MaxHeight" FontSize="24">
                         </TextBlock>
-                            <Button HorizontalAlignment="Right" Content="Delete" Command="{Binding DataContext.DeleteNoteCommand,ElementName=ViewList}" CommandParameter="{Binding}">
-
+                            <Button Grid.Column="1" HorizontalAlignment="Right" Content="Delete" Command="{Binding DataContext.DeleteNoteCommand,ElementName=ViewList}" 
+                                    CommandParameter="{Binding}">
                             </Button>
                             <interactivity:Interaction.Behaviors>
-                                <Core:EventTriggerBehavior EventName="DoubleTapped" >
+                                <Core:EventTriggerBehavior EventName="DoubleTapped">
                                     <Core:InvokeCommandAction Command="{Binding DataContext.OpenNoteCommand,ElementName=ViewList}" />
                                 </Core:EventTriggerBehavior>
                             </interactivity:Interaction.Behaviors>
                         </Grid>
-                        
                     </Border>
                 </DataTemplate>
             </ListView.ItemTemplate>
+            <interactivity:Interaction.Behaviors >
+                <Core:EventTriggerBehavior EventName="PreviewKeyDown" >
+                    <Core:InvokeCommandAction Command="{Binding DataContext.OpenNoteCommand,ElementName=ViewList}"  />
+                </Core:EventTriggerBehavior>
+            </interactivity:Interaction.Behaviors>
         </ListView>
+        <Grid.KeyboardAccelerators>
+            <KeyboardAccelerator Key="Up" Invoked="KeyboardAccelerator_OnInvoked"></KeyboardAccelerator>
+            <KeyboardAccelerator Key="Down" Invoked="KeyboardAccelerator_OnInvoked"></KeyboardAccelerator>
+        </Grid.KeyboardAccelerators>
     </Grid>
 </Page>

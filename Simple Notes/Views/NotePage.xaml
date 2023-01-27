@@ -22,7 +22,6 @@
                 </Grid.RowDefinitions>
                 <Button Content="Назад" HorizontalAlignment="Left" VerticalAlignment="Stretch" Command="{Binding GoBackCommand}"/>
                 <Button Content="Сохранить" HorizontalAlignment="Right" VerticalAlignment="Stretch" Command="{Binding SaveChangesCommand}"/>
-               
             </Grid>
         </Border>
         <Grid Grid.Row="1">
@@ -32,7 +31,7 @@
             </Grid.RowDefinitions>
             <TextBox Grid.Row="0" PlaceholderText="Заголовок заметки" FontSize="36" FontWeight="Bold" MaxHeight="120" ScrollViewer.VerticalScrollBarVisibility="Auto" 
                      VerticalContentAlignment="Center" BorderThickness="2 1 2 1" Text="{Binding Header, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
-                     TextWrapping="Wrap"/>
+                     TextWrapping="Wrap" MaxLength="255"/>
             <TextBox Grid.Row="1" PlaceholderText="Ваша заметка" FontSize="21"  BorderThickness="2 1 2 1" 
                      Text="{Binding Body, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" TextWrapping="Wrap" 
                      AcceptsReturn="True" ScrollViewer.VerticalScrollBarVisibility="Auto"/>

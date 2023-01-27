@@ -1,13 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Windows.UI.Xaml;
-using Simple_Notes.Services.Interfaces;
 using Windows.UI.Xaml.Controls;
-using System.Reflection;
-using System.Threading;
 using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Navigation;
 
@@ -46,8 +39,6 @@ namespace Simple_Notes.Services
 
         public static bool CanGoBack => Frame.CanGoBack;
 
-        public static bool CanGoForward => Frame.CanGoForward;
-
         public static bool GoBack()
         {
             if (CanGoBack)
@@ -58,8 +49,6 @@ namespace Simple_Notes.Services
 
             return false;
         }
-
-        public static void GoForward() => Frame.GoForward();
 
         public static bool Navigate(Type pageType, object parameter = null, NavigationTransitionInfo infoOverride = null)
         {

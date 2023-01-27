@@ -1,52 +1,50 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using SimpleNotes.BAL.Services.Interfaces;
 using SimpleNotes.DAL.Context;
 using SimpleNotes.DAL.Entities;
+using SimpleNotes.DAL.Repository;
 
 namespace SimpleNotes.BAL.Services
 {
     public class NoteService : INoteService
     {
-        private SimpleNotesDb _context;
+        private NoteRepository _notes;
 
-        public NoteService(SimpleNotesDb context)
+        public NoteService(NoteRepository notes)
         {
-            _context = context;
+            _notes = notes;
         }
 
         public Note GetNote(int noteId)
         {
-            return _context.Notes.FirstOrDefault(note => note.NoteId == noteId);
+            return _notes.Get(noteId);
         }
 
         public IList<Note> GetAllNotes()
         {
-            return _context.Notes.ToList();
+            return _notes.GetAll();
         }
 
         public void AddNote(Note note)
         {
-            _context.Notes.Add(note);
-            _context.SaveChanges();
+            _notes.Add(note);
         }
 
         public void UpdateNote(Note noteUpdate)
         {
-            var tempNote = _context.Notes.FirstOrDefault(note => note.NoteId == noteUpdate.NoteId);
-            if (tempNote == null) throw new KeyNotFoundException();
-            _context.Notes.Update(noteUpdate);
-            _context.SaveChanges();
+            if (_notes.GetAll().All(note => note.NoteId != noteUpdate.NoteId))
+                throw new ArgumentOutOfRangeException();
+            _notes.Update(noteUpdate);
         }
 
 
         
         public void DeleteNote(int noteId)
         {
-            var noteToDelete = _context.Notes.Local.FirstOrDefault(note => note.NoteId == noteId) ?? new Note() { NoteId = noteId };
-            _context.Notes.Remove(noteToDelete);
-            _context.SaveChanges();
+            _notes.Remove(noteId);
         }
     }
 }

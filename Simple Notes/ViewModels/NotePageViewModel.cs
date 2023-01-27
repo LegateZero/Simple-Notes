@@ -1,18 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Simple_Notes.Infrastructure.Commands;
 using System.Windows.Input;
 using Simple_Notes.ViewModels.Base;
-using Simple_Notes.Views;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml;
+using Simple_Notes.Services;
 using SimpleNotes.BAL.Services.Interfaces;
-using SimpleNotes.DAL.Context;
 using SimpleNotes.DAL.Entities;
 
 namespace Simple_Notes.ViewModels
@@ -105,8 +97,7 @@ namespace Simple_Notes.ViewModels
                 };
             if (!IsTextHasUnsavedChanges || await dialog.ShowAsync() == ContentDialogResult.Primary)
             {
-                Frame frame = Window.Current.Content as Frame;
-                frame.GoBack();
+                NavigationService.GoBack();
             }
         }
 
